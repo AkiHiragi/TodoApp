@@ -6,9 +6,25 @@
         xmlns:local="clr-namespace:TodoApp"
         mc:Ignorable="d"
         Title="Список задач" Height="350" Width="400">
-    <StackPanel>
+    <StackPanel Margin="10">
         <TextBox x:Name="NewTaskTextBox" Margin="0,0,0,10"/>
-        <Button Content="Добавить задачу" Click="AddTask_Click"/>
-        <ListView x:Name="TasksListView" DisplayMemberPath="Title"/>
+        <Button Content="Добавить" Click="AddTask_Click"/>
+
+        <ListView x:Name="TasksListView">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding IsCompleted, UpdateSourceTrigger=PropertyChanged}" 
+                              Margin="0,0,10,0"
+                              VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Title}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button Content="Удалить выбранное" 
+            Click="DeleteTask_Click" 
+            Margin="0,10,0,0"/>
     </StackPanel>
 </Window>

@@ -21,10 +21,14 @@ namespace TodoApp {
 
         public MainWindow() {
             InitializeComponent();
-            LoadTasks();
+            using (var db = new AppDbContext()) {
+                db.Database.EnsureCreated();
+                LoadTasks();
+            }
         }
 
         private void LoadTasks() {
+            
             TasksListView.ItemsSource = _db.Tasks.ToList();
         }
 
@@ -33,6 +37,14 @@ namespace TodoApp {
                 _db.Tasks.Add(new TaskItem { Title = NewTaskTextBox.Text });
                 _db.SaveChanges();
                 NewTaskTextBox.Clear();
+                LoadTasks();
+            }
+        }
+
+        private void DeleteTask_Click(object sender, RoutedEventArgs e) {
+            if(TasksListView.SelectedItem is TaskItem task) {
+                _db.Tasks.Remove(task);
+                _db.SaveChanges();
                 LoadTasks();
             }
         }

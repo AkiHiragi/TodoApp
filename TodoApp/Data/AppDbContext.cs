@@ -15,5 +15,11 @@ namespace TodoApp.Data {
             string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "todo.db");
             options.UseSqlite($"Data Source={dbPath}");
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            modelBuilder.Entity<TaskItem>()
+                .Property(t => t.IsCompleted)
+                .HasDefaultValue(false);
+        }
     }
 }

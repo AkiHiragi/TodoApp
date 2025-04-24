@@ -9,6 +9,3 @@ obj/
 .vs/
 *.user
 *.suo
-
-# Автогенерируемые файлы
-Migrations/
