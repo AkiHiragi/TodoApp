@@ -4,27 +4,54 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TodoApp"
+        xmlns:conv="clr-namespace:TodoApp.Converters"
         mc:Ignorable="d"
         Title="Список задач" Height="350" Width="400">
+    <Window.Resources>
+        <conv:StrikeThroughConverter x:Key="StrikeConverter"/>
+        <conv:BoolToColorConverter x:Key="ColorConverter"/>
+    </Window.Resources>
     <StackPanel Margin="10">
+        <StackPanel Orientation="Horizontal" Margin="0,10">
+            <RadioButton x:Name="AllTasksFilter" Content="Все" GroupName="Filter" IsChecked="True" 
+                         Margin="0,0,10,0" Checked="AllTasksFilter_Checked"/>
+            <RadioButton x:Name="ActiveTasksFilter" Content="Активные" GroupName="Filter" 
+                         Margin="0,0,10,0" Checked="ActiveTasksFilter_Checked"/>
+            <RadioButton x:Name="CompletedTasksFilter" Content="Выполненные" GroupName="Filter" 
+                         Margin="0,0,10,0" Checked="CompletedTasksFilter_Checked"/>
+        </StackPanel>
         <TextBox x:Name="NewTaskTextBox" Margin="0,0,0,10"/>
-        <Button Content="Добавить" Click="AddTask_Click"/>
-
+        
         <ListView x:Name="TasksListView">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <CheckBox IsChecked="{Binding IsCompleted, UpdateSourceTrigger=PropertyChanged}" 
-                              Margin="0,0,10,0"
-                              VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding Title}" VerticalAlignment="Center"/>
-                    </StackPanel>
+                    <Border Background="{Binding IsCompleted, Converter={StaticResource ColorConverter}}"
+                            CornerRadius="5" Padding="10" Margin="0,5">
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding IsCompleted}"
+                                      VerticalAlignment="Center"
+                                      Margin="0,0,10,0"/>
+                            <TextBlock Text="{Binding Title}"
+                                       VerticalAlignment="Center"
+                                       TextDecorations="{Binding IsCompleted, Converter={StaticResource StrikeConverter}}"/>
+                        </StackPanel>
+                    </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+        <Button Content="Добавить" 
+                Click="AddTask_Click"
+                Background="#FF4AAF50"
+                Foreground="White"
+                Padding="15,5"
+                Margin="0,0,10,0"/>
+            
         <Button Content="Удалить выбранное" 
-            Click="DeleteTask_Click" 
-            Margin="0,10,0,0"/>
+                Click="DeleteTask_Click" 
+                Background="#FFF44336"
+                Foreground="White"
+                Padding="15,5"/>            
+        </StackPanel>
     </StackPanel>
 </Window>

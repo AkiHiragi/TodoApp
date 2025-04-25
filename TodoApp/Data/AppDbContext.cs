@@ -9,12 +9,14 @@ using TodoApp.Models;
 
 namespace TodoApp.Data {
     public class AppDbContext : DbContext {
-        public DbSet<TaskItem>Tasks { get; set; }
+        public DbSet<TaskItem> Tasks { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options) { 
-            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "todo.db");
+        protected override void OnConfiguring(DbContextOptionsBuilder options) {
+            var dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "todo.db");
+            Console.WriteLine($"Using database at: {dbPath}");
             options.UseSqlite($"Data Source={dbPath}");
         }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<TaskItem>()
